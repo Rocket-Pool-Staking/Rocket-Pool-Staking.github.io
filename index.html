@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO / EEAT Meta Tags -->
+  <title>Rocket Pool Staking — rETH Rewards, APY/APR, Node Operators, Safety &amp; Guide (2026)</title>
+  <meta name="description" content="Complete Rocket Pool staking guide (2026): how rETH liquid staking works, real APY vs APR, node operator setup, RPL collateral, smoothing pool, security, smart-contract risks, and step-by-step how to stake ETH via Rocket Pool. Deep FAQ included.">
+  <meta name="author" content="Crypto Finance Experts">
+  <link rel="canonical" href="https://rocket-pool-staking.example.com/">
+
+  <link rel="icon" type="image/png" href="rocket.logo.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://rocket-pool-staking.example.com/">
+  <meta property="og:title" content="Rocket Pool Staking — rETH Rewards, APY/APR, Node Operators, Safety &amp; Guide (2026)">
+  <meta property="og:description" content="Practical Rocket Pool staking guide: rETH rewards, APY/APR, node operator requirements, RPL collateral, smoothing pool, and security checklist.">
+  <meta property="og:image" content="cover.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://rocket-pool-staking.example.com/">
+  <meta name="twitter:title" content="Rocket Pool Staking — rETH Rewards, APY/APR, Node Operators (2026)">
+  <meta name="twitter:description" content="Deep Rocket Pool staking guide: rETH yield mechanics, node operators, RPL, smoothing pool, and risk analysis for 2025–2026.">
+  <meta name="twitter:image" content="cover.png">
+
+  <style>
+    :root {
+      /* Rocket Pool — Deep Space Orange Theme */
+      --primary: #F97316;       /* orange-500 */
+      --primary-600: #EA580C;   /* orange-600 */
+      --primary-700: #C2410C;   /* orange-700 */
+      --accent: #FCD34D;        /* amber accent */
+      --accent-2: #FB923C;      /* orange-400 */
+
+      --ink: #FDF8F4;
+      --muted: #A8A29E;
+      --muted-2: #78716C;
+
+      --bg: #0A0805;
+      --panel: #0F0B07;
+      --panel-2: #150F09;
+      --line: rgba(249,115,22,.14);
+
+      --ok: #22C55E;
+      --warn: #F59E0B;
+      --error: #EF4444;
+
+      --shadow: 0 18px 44px rgba(0,0,0,.60);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --radius-lg: 22px;
+      --gap: 1.25rem;
+      --gap-lg: 2rem;
+    }
+
+    * { box-sizing: border-box }
+    html, body { height: 100% }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      color: var(--muted);
+      background:
+        radial-gradient(900px 600px at 10% 0%, rgba(249,115,22,.20), transparent 60%),
+        radial-gradient(900px 600px at 92% 8%, rgba(252,211,77,.08), transparent 55%),
+        radial-gradient(900px 600px at 50% 90%, rgba(194,65,12,.15), transparent 60%),
+        linear-gradient(180deg, #06040202 0%, #0A0805 40%, #06040202 100%);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: var(--primary); text-decoration: none }
+    a:hover { text-decoration: underline }
+
+    img { max-width: 100%; height: auto; display: block }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem }
+
+    h1, h2, h3, h4 { color: var(--ink); line-height: 1.25; margin: 0 0 .6rem }
+    h1 {
+      font-size: clamp(2rem, 4.5vw, 3.1rem);
+      font-weight: 950;
+      letter-spacing: .2px;
+    }
+    h2 {
+      font-size: clamp(1.35rem, 2.8vw, 2rem);
+      margin-top: 2.2rem;
+      padding-top: .6rem;
+      border-top: 1px solid var(--line);
+    }
+    h3 { font-size: clamp(1.05rem, 2.2vw, 1.3rem); color: #FEF3C7 }
+
+    p, li, td, th { font-size: 1rem }
+    .lead { font-size: 1.125rem; color: #FEF3C7 }
+    .muted { color: var(--muted) }
+    .muted-2 { color: var(--muted-2) }
+
+    /* ── HERO ── */
+    header.hero {
+      padding: clamp(2rem, 6vw, 4.5rem) 0;
+      background:
+        radial-gradient(700px 450px at 18% 10%, rgba(249,115,22,.28), transparent 60%),
+        radial-gradient(600px 380px at 88% 20%, rgba(252,211,77,.10), transparent 55%),
+        linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,0) 60%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: var(--gap-lg);
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    .hero-card {
+      background: linear-gradient(160deg, rgba(20,13,7,.88), rgba(15,11,7,.72));
+      border: 1px solid rgba(249,115,22,.20);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.2rem, 3vw, 2rem);
+      box-shadow: var(--shadow), 0 0 60px rgba(249,115,22,.06);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-row { display: flex; align-items: center; gap: .9rem; margin-bottom: .9rem }
+    .brand-logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      border: 1px solid rgba(249,115,22,.25);
+      background: rgba(249,115,22,.08);
+      padding: .35rem;
+      object-fit: contain;
+      box-shadow: 0 10px 22px rgba(0,0,0,.40), 0 0 16px rgba(249,115,22,.15);
+      flex: 0 0 auto;
+    }
+
+    /* ── CTA — big & attractive ── */
+    .cta-center {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      background: linear-gradient(135deg, #F97316 0%, #EA580C 55%, #C2410C 100%);
+      color: #fff;
+      padding: 1.1rem 2.4rem;
+      border-radius: 16px;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: .3px;
+      box-shadow:
+        0 0 0 1px rgba(249,115,22,.35),
+        0 8px 20px rgba(249,115,22,.30),
+        0 22px 50px rgba(194,65,12,.35);
+      border: 1px solid rgba(255,255,255,.12);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .cta:hover {
+      transform: translateY(-3px) scale(1.02);
+      filter: brightness(1.08);
+      box-shadow:
+        0 0 0 1px rgba(249,115,22,.45),
+        0 12px 28px rgba(249,115,22,.40),
+        0 30px 60px rgba(194,65,12,.40);
+      text-decoration: none;
+    }
+    .cta-icon { font-size: 1.2rem }
+
+    /* ── NOTE ── */
+    .note {
+      border-left: 3px solid var(--primary);
+      padding: .8rem 1rem;
+      background: rgba(249,115,22,.09);
+      border-radius: 10px;
+      color: #FEF3C7;
+    }
+
+    /* ── STEPS ── */
+    section.step-guide { padding: clamp(2rem, 6vw, 3.5rem) 0 }
+    .steps { display: grid; gap: var(--gap); grid-template-columns: 1fr }
+    .step {
+      background: linear-gradient(160deg, rgba(20,13,7,.80), rgba(15,11,7,.65));
+      border: 1px solid rgba(249,115,22,.14);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: 0 12px 26px rgba(0,0,0,.45);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .step:hover { transform: translateY(-4px); box-shadow: 0 20px 38px rgba(0,0,0,.55) }
+    .step .icon {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: inline-grid; place-items: center;
+      background: rgba(249,115,22,.16);
+      margin-bottom: .65rem;
+      color: #FEF3C7;
+      font-weight: 950;
+      border: 1px solid rgba(249,115,22,.22);
+    }
+
+    /* ── CARD ── */
+    main .card {
+      background: linear-gradient(160deg, rgba(20,13,7,.72), rgba(15,11,7,.60));
+      border: 1px solid rgba(249,115,22,.12);
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      margin: 1.25rem 0;
+      box-shadow: 0 12px 26px rgba(0,0,0,.45);
+    }
+
+    .grid-2 { display: grid; gap: var(--gap); grid-template-columns: 1fr }
+    .pillbar { display: flex; flex-wrap: wrap; gap: .6rem; margin: .75rem 0 0 }
+    .pill {
+      border: 1px solid rgba(249,115,22,.20);
+      background: rgba(249,115,22,.07);
+      padding: .4rem .7rem;
+      border-radius: 999px;
+      font-weight: 800;
+      color: #FEF3C7;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      border: 1px solid rgba(249,115,22,.18);
+      background: linear-gradient(180deg, rgba(249,115,22,.09), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      padding: 1.1rem;
+    }
+    .toc strong { color: #FDF8F4 }
+    .toc ul { margin: .5rem 0 0; padding-left: 1.1rem }
+    .toc li { margin: .28rem 0 }
+    .toc a { font-weight: 800 }
+
+    /* ── TABLE ── */
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px }
+    th, td { padding: .9rem; border-bottom: 1px solid var(--line) }
+    th { background: rgba(249,115,22,.10); color: #FDF8F4; text-align: left }
+    tr.highlight { background: rgba(249,115,22,.07) }
+    tr:hover { background: rgba(255,255,255,.025) }
+
+    .ok { color: var(--ok) }
+    .warn { color: var(--warn) }
+    .err { color: var(--error) }
+
+    /* ── EEAT ── */
+    .eeat {
+      background: linear-gradient(160deg, rgba(249,115,22,.10), rgba(255,255,255,.02));
+      border: 1px solid rgba(249,115,22,.18);
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      box-shadow: 0 12px 26px rgba(0,0,0,.45);
+    }
+
+    /* ── FAQ ── */
+    .faq-item { border-bottom: 1px solid var(--line); padding: .9rem 0 }
+    .faq-button {
+      all: unset; display: flex; justify-content: space-between; align-items: center;
+      width: 100%; cursor: pointer; padding: .3rem 0;
+    }
+    .faq-button:focus-visible { outline: 2px solid var(--primary) }
+    .faq-button h3 { margin: 0; font-weight: 950 }
+    .faq-content { max-height: 0; overflow: hidden; transition: max-height .25s ease }
+    .faq-content.open { padding-top: .6rem }
+    .faq-plus { font-weight: 950; color: var(--accent-2) }
+
+    /* ── CALLOUT GRID ── */
+    .callout-grid { display: grid; gap: var(--gap); grid-template-columns: 1fr; margin-top: .75rem }
+    .mini {
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(249,115,22,.13);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .mini h3 { margin-bottom: .35rem }
+    .kpi-badges { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .5rem }
+    .kpi-badges span {
+      border: 1px solid rgba(249,115,22,.22);
+      background: rgba(249,115,22,.08);
+      color: #FEF3C7;
+      padding: .3rem .55rem;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: .9rem;
+    }
+
+    /* ── ROCKET DECORATIVE DIVIDER ── */
+    .flame-divider {
+      text-align: center;
+      font-size: 1.5rem;
+      margin: .5rem 0;
+      opacity: .45;
+      letter-spacing: .4rem;
+    }
+
+    @media (min-width: 860px) {
+      .steps { grid-template-columns: repeat(4, 1fr) }
+      .grid-2 { grid-template-columns: 1fr 1fr }
+      .callout-grid { grid-template-columns: 1fr 1fr }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="hero" role="banner">
+  <div class="container hero-grid">
+    <div class="hero-card" aria-label="Intro">
+
+      <div class="brand-row">
+        <img class="brand-logo" src="rocket.logo.png" alt="Rocket Pool logo">
+        <div>
+          <div class="muted" style="font-weight:900; letter-spacing:.2px;">Operational Guide</div>
+          <div class="muted-2" style="font-size:.95rem;">rETH Rewards • APY/APR • Node Operators • RPL • Safety</div>
+        </div>
+      </div>
+
+      <h1>Rocket Pool Staking</h1>
+      <p class="lead">
+        The complete, security-first guide to <strong>Rocket Pool staking</strong>: how liquid ETH staking via <strong>rETH</strong> works,
+        what drives your real APY/APR, how <strong>node operators</strong> earn boosted yield with <strong>RPL collateral</strong>,
+        how the <strong>smoothing pool</strong> reduces reward variance, what <strong>smart-contract risks</strong> actually look like,
+        and how to stake ETH safely while avoiding the mistakes that cost people funds.
+      </p>
+
+      <div class="cta-center">
+        <a href="#" class="cta" aria-label="Start Staking on Rocket Pool">
+          <span class="cta-icon">🚀</span> Start Staking on Rocket Pool
+        </a>
+      </div>
+
+      <div class="note" style="margin-top:1.25rem;">
+        <strong>Core principle:</strong> Rocket Pool is a decentralised, trustless ETH liquid staking protocol.
+        Your rETH auto-compounds — but smart-contract risk is real. Understand the mechanics before you commit meaningful size.
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── 4-STEP FLOW ── -->
+<section class="step-guide" aria-labelledby="how-works">
+  <div class="container">
+    <h2 id="how-works">How Rocket Pool Staking Works: Deposit → Mint rETH → Earn → Exit</h2>
+    <div class="steps" role="list">
+
+      <article class="step" role="listitem">
+        <div class="icon">①</div>
+        <h3>Deposit ETH — receive rETH instantly</h3>
+        <p>
+          Send ETH to Rocket Pool's deposit pool contract. You receive rETH — a liquid receipt token
+          that continuously grows in value relative to ETH as staking rewards accrue.
+        </p>
+      </article>
+
+      <article class="step" role="listitem">
+        <div class="icon">②</div>
+        <h3>rETH auto-compounds — no claiming needed</h3>
+        <p>
+          rETH's exchange rate rises over time. There are no reward-claim transactions:
+          your ETH equivalent grows passively. The compounding effect is built into the token itself.
+        </p>
+      </article>
+
+      <article class="step" role="listitem">
+        <div class="icon">③</div>
+        <h3>Node operators run validators — earn RPL + ETH rewards</h3>
+        <p>
+          Rocket Pool node operators provide 8 ETH (or 4 ETH via LEB8 minipools) plus RPL collateral,
+          operate validators, and earn priority fees, MEV, and RPL inflation rewards on top of base staking yield.
+        </p>
+      </article>
+
+      <article class="step" role="listitem">
+        <div class="icon">④</div>
+        <h3>Exit via swap — no unbonding queue for rETH holders</h3>
+        <p>
+          Liquid stakers can exit by swapping rETH back to ETH on DEXs or through the deposit pool
+          (when ETH is available). Node operators must exit validators through the Ethereum consensus layer.
+        </p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<main class="container" role="main">
+
+  <!-- TOC -->
+  <section class="card toc" aria-label="Table of Contents">
+    <strong>On this page (Rocket Pool Staking):</strong>
+    <ul>
+      <li><a href="#overview">Rocket Pool overview: what it is and who it's for</a></li>
+      <li><a href="#rewards">Rocket Pool staking rewards: how rETH yield is generated</a></li>
+      <li><a href="#apy-apr">Rocket Pool APY vs APR: how to compare correctly</a></li>
+      <li><a href="#how-to">How to stake ETH on Rocket Pool: step-by-step</a></li>
+      <li><a href="#node-operators">Node operators: requirements, RPL collateral, and boosted yield</a></li>
+      <li><a href="#smoothing-pool">Smoothing pool: what it is and why it matters</a></li>
+      <li><a href="#calculator">Rocket Pool staking calculator framework</a></li>
+      <li><a href="#safety">Is Rocket Pool staking safe? Smart-contract &amp; protocol risks</a></li>
+      <li><a href="#comparison">Rocket Pool vs Lido vs solo staking: key trade-offs</a></li>
+      <li><a href="#best-practices">Best practices for staking on Rocket Pool</a></li>
+      <li><a href="#troubleshooting">Troubleshooting common Rocket Pool issues</a></li>
+      <li><a href="#eeat">Authoritative sources &amp; references</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="card" id="overview">
+    <h2>Rocket Pool Overview: What It Is, How It's Different, and Who It's For</h2>
+    <p>
+      <strong>Rocket Pool</strong> is a decentralised, non-custodial Ethereum liquid staking protocol.
+      Unlike centralised staking services, no single operator controls your ETH.
+      Validators are run by a distributed network of node operators who each put up collateral (ETH + RPL),
+      creating a trustless, permission-minimised system aligned with Ethereum's decentralisation goals.
+    </p>
+    <p>
+      There are two distinct ways to participate: as a <strong>liquid staker</strong> (deposit ETH, get rETH) or
+      as a <strong>node operator</strong> (run a validator minipool with your own ETH + RPL stake for higher yield).
+      Understanding which role fits your situation is the first decision.
+    </p>
+
+    <div class="callout-grid" role="list">
+      <div class="mini" role="listitem">
+        <h3>Liquid staker (rETH)</h3>
+        <p class="muted">
+          Deposit any amount of ETH, receive rETH, earn base staking yield automatically.
+          No technical setup, no minimum beyond gas cost.
+        </p>
+        <div class="kpi-badges">
+          <span>No minimum</span><span>Auto-compounding</span><span>DEX-liquid</span>
+        </div>
+      </div>
+      <div class="mini" role="listitem">
+        <h3>Node operator (minipool)</h3>
+        <p class="muted">
+          Provide 8 ETH (or 4 ETH LEB8) + RPL collateral, run a validator node, earn base yield
+          plus MEV, priority fees, and RPL inflation rewards.
+        </p>
+        <div class="kpi-badges">
+          <span>8 ETH + RPL</span><span>Boosted yield</span><span>Operational overhead</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>Who should use Rocket Pool:</strong> ETH holders who want decentralised liquid staking without
+      running a full 32 ETH validator. Node operators who want higher yield in exchange for operational responsibility.
+    </div>
+  </section>
+
+  <!-- REWARDS -->
+  <section class="card" id="rewards">
+    <h2>Rocket Pool Staking Rewards: How rETH Yield Is Generated and What Affects It</h2>
+    <p>
+      <strong>rETH rewards</strong> come from the combined activity of all Rocket Pool node operators:
+      Ethereum consensus rewards, execution-layer priority fees, and MEV captured via the smoothing pool
+      all flow into the protocol and are reflected in the rising rETH/ETH exchange rate.
+    </p>
+
+    <table aria-label="Reward components">
+      <thead>
+        <tr>
+          <th>Reward source</th>
+          <th>Who earns it</th>
+          <th>Impact on rETH holders</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Consensus (attestation) rewards</td>
+          <td>Node operators</td>
+          <td>Flows into rETH exchange rate</td>
+        </tr>
+        <tr>
+          <td>Execution-layer priority fees</td>
+          <td>Node operators</td>
+          <td>Shared via smoothing pool</td>
+        </tr>
+        <tr class="highlight">
+          <td>MEV (maximal extractable value)</td>
+          <td>Node operators (opt-in)</td>
+          <td>Boosts overall pool APR</td>
+        </tr>
+        <tr>
+          <td>RPL inflation rewards</td>
+          <td>Node operators only</td>
+          <td>Not shared with rETH holders</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>Key insight:</strong> rETH holders benefit from consensus rewards and a share of execution-layer fees,
+      but <em>not</em> from RPL inflation — that is exclusively for node operators. Node operator yield is
+      structurally higher to compensate for collateral lock-up and operational risk.
+    </div>
+  </section>
+
+  <!-- APY/APR -->
+  <section class="card" id="apy-apr">
+    <h2>Rocket Pool APY vs APR: Reading the Numbers Without Being Misled</h2>
+    <p>
+      Quoted rates across staking dashboards and aggregators vary significantly. Understanding what each number
+      actually means saves you from chasing phantom yield.
+    </p>
+
+    <div class="grid-2">
+      <div class="mini">
+        <h3>APR (Annual Percentage Rate)</h3>
+        <p class="muted">
+          Simple annualised rate with no compounding. Use this as a baseline comparison number.
+          Most Rocket Pool dashboards quote APR for rETH yield.
+        </p>
+      </div>
+      <div class="mini">
+        <h3>APY (Annual Percentage Yield)</h3>
+        <p class="muted">
+          Includes compounding. Because rETH auto-compounds continuously, the "effective APY"
+          is technically higher than the quoted APR — but the difference at typical rates is modest.
+        </p>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>What to compare:</strong> Look at the <em>30-day rolling APR</em> from official sources like
+      Rocket Pool's own dashboard or RocketScan. Short-window figures (7-day) are noisy due to MEV variance.
+      Always check the date the figure was last updated.
+    </div>
+  </section>
+
+  <!-- HOW TO STAKE -->
+  <section class="card" id="how-to">
+    <h2>How to Stake ETH on Rocket Pool: Step-by-Step for rETH Liquid Stakers</h2>
+    <ol>
+      <li>
+        <strong>Set up a non-custodial wallet</strong> (MetaMask, Rabby, or hardware wallet) with sufficient ETH for your deposit plus gas.
+      </li>
+      <li>
+        <strong>Navigate to the official Rocket Pool app</strong> — always use the bookmarked official URL; confirm the contract address independently.
+      </li>
+      <li>
+        <strong>Connect your wallet</strong> and select the amount of ETH you want to stake. There is no enforced minimum beyond gas.
+      </li>
+      <li>
+        <strong>Review the transaction</strong> — check the rETH amount you will receive and the current rETH/ETH exchange rate before confirming.
+      </li>
+      <li>
+        <strong>Confirm and receive rETH</strong> — the transaction mints rETH to your wallet. Your ETH is now staked in the Rocket Pool protocol.
+      </li>
+      <li>
+        <strong>Hold rETH to accrue yield</strong> — the exchange rate rises over time. You can hold, use in DeFi, or swap back via the deposit pool or a DEX.
+      </li>
+    </ol>
+
+    <div class="note">
+      <strong>Security tip:</strong> Bookmark the official Rocket Pool site before you start. Phishing sites mimicking
+      legitimate staking protocols are the #1 avoidable cause of fund loss. Verify contract addresses on official sources.
+    </div>
+  </section>
+
+  <!-- NODE OPERATORS -->
+  <section class="card" id="node-operators">
+    <h2>Rocket Pool Node Operators: Requirements, RPL Collateral, and How Boosted Yield Works</h2>
+    <p>
+      Running a Rocket Pool node is a higher-commitment path offering meaningfully better yield —
+      but it requires technical ability, capital commitment, and ongoing operational responsibility.
+    </p>
+
+    <table aria-label="Node operator requirements">
+      <thead>
+        <tr>
+          <th>Minipool type</th>
+          <th>Operator ETH required</th>
+          <th>Protocol ETH matched</th>
+          <th>Min RPL collateral</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Standard (16 ETH)</td>
+          <td>16 ETH</td>
+          <td>16 ETH</td>
+          <td>10% of borrowed ETH in RPL</td>
+        </tr>
+        <tr>
+          <td>LEB8 (8 ETH)</td>
+          <td>8 ETH</td>
+          <td>24 ETH</td>
+          <td>10% of borrowed ETH in RPL</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:1rem;">
+      RPL collateral protects the protocol against potential slashing losses. Node operators must maintain
+      at least 10% RPL-to-borrowed-ETH ratio (valued at ETH price) to remain eligible for RPL rewards.
+      The maximum RPL staked for reward purposes is 150% of borrowed ETH value.
+    </p>
+
+    <div class="note">
+      <strong>LEB8 advantage:</strong> 8 ETH minipools (Rocket Pool's "Less ETH Bonded" pools) allow
+      operators to run more validators per ETH committed — improving capital efficiency and boosting operator APR.
+    </div>
+  </section>
+
+  <!-- SMOOTHING POOL -->
+  <section class="card" id="smoothing-pool">
+    <h2>Rocket Pool Smoothing Pool: How It Works and Why It Reduces Yield Variance</h2>
+    <p>
+      Execution-layer rewards (priority fees and MEV) are inherently lumpy: a single validator might go weeks
+      without a major MEV opportunity, then receive an unusually large fee block. The <strong>smoothing pool</strong>
+      is Rocket Pool's solution: opted-in node operators pool their execution-layer rewards and receive a
+      smoothed share each reward period (~28 days), irrespective of which specific validator proposed the
+      lucky block.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Without smoothing pool</h3>
+        <p class="muted">
+          Execution-layer rewards go directly to the validator's fee recipient.
+          High variance — most reward periods yield little; occasional large fees.
+        </p>
+        <div class="kpi-badges"><span>High variance</span><span>Unpredictable</span></div>
+      </div>
+      <div class="mini">
+        <h3>With smoothing pool</h3>
+        <p class="muted">
+          Rewards pooled across all opted-in operators and distributed proportionally.
+          Lower variance, more predictable income, particularly valuable for smaller operators.
+        </p>
+        <div class="kpi-badges"><span>Low variance</span><span>Predictable</span><span>28-day cycle</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULATOR -->
+  <section class="card" id="calculator">
+    <h2>Rocket Pool Staking Calculator: Estimation Framework for rETH Holders and Node Operators</h2>
+    <p>
+      No calculator gives a guaranteed future return — but a disciplined framework gives you a realistic range.
+    </p>
+
+    <h3>For rETH liquid stakers</h3>
+    <ul>
+      <li><strong>Input:</strong> ETH deposit amount × current rETH APR (from RocketScan or official dashboard)</li>
+      <li><strong>Adjust for:</strong> network-wide ETH staking saturation (higher total ETH staked = lower base rate)</li>
+      <li><strong>Output:</strong> estimated ETH-equivalent growth over 6 / 12 / 24 months at current rate</li>
+    </ul>
+
+    <h3>For node operators</h3>
+    <ul>
+      <li><strong>Consensus rewards</strong> — annualised validator yield at current network participation</li>
+      <li><strong>Execution-layer rewards</strong> — highly variable; use a 30-day rolling average from smoothing pool data</li>
+      <li><strong>RPL inflation rewards</strong> — depends on RPL staked, RPL/ETH ratio, and reward period</li>
+      <li><strong>Deduct:</strong> server/VPS cost, gas for reward claims, and RPL collateral opportunity cost</li>
+    </ul>
+
+    <div class="note">
+      <strong>Honest caveat:</strong> ETH staking rates have trended lower as total staked ETH grows.
+      Model conservatively and treat any MEV/smoothing pool upside as bonus, not baseline.
+    </div>
+  </section>
+
+  <!-- SAFETY -->
+  <section class="card" id="safety">
+    <h2>Is Rocket Pool Staking Safe? Smart-Contract, Protocol, and Operational Risk Analysis</h2>
+    <p>
+      Rocket Pool is one of the most audited DeFi staking protocols on Ethereum, but "audited" is not the same
+      as "risk-free." Understanding the actual risk surface is how you make an informed decision.
+    </p>
+
+    <table aria-label="Risk categories">
+      <thead>
+        <tr>
+          <th>Risk category</th>
+          <th>Severity</th>
+          <th>Mitigation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Smart-contract exploit</td>
+          <td class="warn">Medium-High</td>
+          <td>Multiple audits, bug bounty program, gradual upgrade cadence</td>
+        </tr>
+        <tr class="highlight">
+          <td>rETH de-peg (liquidity crunch)</td>
+          <td class="warn">Medium</td>
+          <td>Deep DEX liquidity pools; fallback to deposit pool redemption</td>
+        </tr>
+        <tr>
+          <td>Node operator slashing</td>
+          <td class="ok">Low</td>
+          <td>RPL collateral absorbs losses before rETH holders are affected</td>
+        </tr>
+        <tr class="highlight">
+          <td>RPL price risk (for node operators)</td>
+          <td class="warn">Medium</td>
+          <td>RPL/ETH ratio affects collateral ratio and reward eligibility</td>
+        </tr>
+        <tr>
+          <td>Phishing / social engineering</td>
+          <td class="err">High (user-controlled)</td>
+          <td>Bookmark official URL; verify contract address on-chain</td>
+        </tr>
+        <tr class="highlight">
+          <td>Oracle failure</td>
+          <td class="warn">Low-Medium</td>
+          <td>Decentralised oracle node design; protocol-level safeguards</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>Security baseline:</strong> Rocket Pool's RPL collateral model means node operators absorb
+      slashing risk before rETH holders are impacted. This is a structurally important protection for
+      liquid stakers — but smart-contract bugs bypass this protection entirely.
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="card" id="comparison">
+    <h2>Rocket Pool vs Lido vs Solo Staking: How to Choose the Right Model</h2>
+
+    <table aria-label="Staking model comparison">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Rocket Pool (rETH)</th>
+          <th>Lido (stETH)</th>
+          <th>Solo staking (32 ETH)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Minimum ETH</td>
+          <td>No minimum</td>
+          <td>No minimum</td>
+          <td>32 ETH</td>
+        </tr>
+        <tr>
+          <td>Decentralisation</td>
+          <td class="ok">High (permissionless NOs)</td>
+          <td class="warn">Lower (curated operators)</td>
+          <td class="ok">Maximum</td>
+        </tr>
+        <tr class="highlight">
+          <td>Slashing protection</td>
+          <td>RPL collateral buffer</td>
+          <td>Insurance fund</td>
+          <td>Sole responsibility</td>
+        </tr>
+        <tr>
+          <td>Token liquidity</td>
+          <td>rETH (deep DEX pools)</td>
+          <td>stETH (deepest DeFi liquidity)</td>
+          <td>No liquid token</td>
+        </tr>
+        <tr class="highlight">
+          <td>Smart-contract risk</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Minimal</td>
+        </tr>
+        <tr>
+          <td>Technical overhead</td>
+          <td>None (rETH holders)</td>
+          <td>None</td>
+          <td>Very high</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>When to choose Rocket Pool:</strong> You prioritise decentralisation, want ETH-aligned trustless
+      staking, and are comfortable with smart-contract risk. Lido offers deeper DeFi composability;
+      solo staking is the gold standard for trust minimisation but requires 32 ETH and technical expertise.
+    </div>
+  </section>
+
+  <!-- BEST PRACTICES -->
+  <section class="card" id="best-practices">
+    <h2>Best Practices for Rocket Pool Staking: High-Impact, Low-Effort Security Habits</h2>
+    <ul>
+      <li><strong>Always use the official Rocket Pool app URL</strong> — bookmark it and never click email/social links.</li>
+      <li><strong>Verify the rETH contract address</strong> against Ethereum mainnet explorers and official docs before any interaction.</li>
+      <li><strong>Test with a small amount first</strong> — even a tiny ETH deposit confirms the flow before committing size.</li>
+      <li><strong>For node operators:</strong> maintain your RPL collateral ratio above 10% — dropping below pauses RPL reward eligibility.</li>
+      <li><strong>Use a hardware wallet</strong> for any meaningful ETH position; software wallets are a phishing risk.</li>
+      <li><strong>Periodically review token approvals</strong> via a tool like Revoke.cash and revoke stale permissions.</li>
+      <li><strong>Track rETH/ETH exchange rate</strong> not just headline APR — the rate is the ground truth of your accrued yield.</li>
+      <li><strong>Understand the exit path</strong> before you enter: know whether the deposit pool has available ETH or if DEX swaps are needed.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Most common mistake:</strong> Optimising for a few basis points of extra yield while ignoring phishing risk,
+      stale approvals, and exit-path complexity. Security hygiene has a higher expected return than yield optimisation at most sizes.
+    </div>
+  </section>
+
+  <!-- TROUBLESHOOTING -->
+  <section class="card" id="troubleshooting">
+    <h2>Rocket Pool Troubleshooting: Common Problems, Root Causes, and Fixes</h2>
+
+    <h3>"rETH exchange rate seems wrong / not growing"</h3>
+    <ul>
+      <li>Exchange rate updates are not real-time — they update on a reward interval cadence (~28 days for RPL rewards; consensus rewards are reflected more frequently).</li>
+      <li>Compare against RocketScan or the official dashboard, not a stale third-party feed.</li>
+      <li>Short observation windows (days) will show almost no visible change at current APR levels.</li>
+    </ul>
+
+    <h3>"Can't redeem rETH for ETH through the deposit pool"</h3>
+    <ul>
+      <li>The deposit pool may have insufficient ETH for direct redemption — new deposits refill it as minipools are matched.</li>
+      <li>Use a DEX (Curve, Uniswap) to swap rETH → ETH when the deposit pool is depleted.</li>
+      <li>Check the deposit pool balance on RocketScan before attempting on-chain redemption.</li>
+    </ul>
+
+    <h3>"Node operator: RPL rewards not received"</h3>
+    <ul>
+      <li>Your RPL collateral ratio likely dropped below the 10% minimum — check current RPL/ETH ratio.</li>
+      <li>Rewards must be claimed manually each reward period — unclaimed rewards are not lost but don't compound automatically.</li>
+      <li>Ensure your node is registered correctly on-chain and your minipool is in an active state.</li>
+    </ul>
+
+    <h3>"High gas — transaction reverting"</h3>
+    <ul>
+      <li>Ensure your wallet has enough ETH for both the deposit and gas — failing to budget for gas is a very common cause of reverts.</li>
+      <li>Try during off-peak hours; consider setting a custom gas limit for complex staking contract interactions.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Debugging rule:</strong> Always check on-chain data (Etherscan, RocketScan) first.
+      UI states can lag or misrepresent — the contract state is always the source of truth.
+    </div>
+  </section>
+
+  <!-- EEAT / SOURCES -->
+  <section class="eeat" id="eeat" aria-labelledby="eeat-title">
+    <h2 id="eeat-title">Rocket Pool Staking: Authoritative References &amp; External Sources</h2>
+
+    <h3>Rocket Pool — Protocol &amp; Documentation</h3>
+    <ul>
+      <li><a href="https://rocketpool.net/" target="_blank" rel="noopener nofollow">Rocket Pool — Official Website</a></li>
+      <li><a href="https://docs.rocketpool.net/" target="_blank" rel="noopener nofollow">Rocket Pool — Official Technical Documentation</a></li>
+      <li><a href="https://github.com/rocket-pool/rocketpool" target="_blank" rel="noopener nofollow">Rocket Pool — Smart Contracts (GitHub)</a></li>
+      <li><a href="https://rocketscan.io/" target="_blank" rel="noopener nofollow">RocketScan — On-chain Analytics &amp; APR Dashboard</a></li>
+    </ul>
+
+    <h3>Ethereum Staking Context</h3>
+    <ul>
+      <li><a href="https://ethereum.org/en/staking/" target="_blank" rel="noopener nofollow">Ethereum.org — Staking Overview (official)</a></li>
+      <li><a href="https://ethereum.org/en/staking/pools/" target="_blank" rel="noopener nofollow">Ethereum.org — Pooled Staking Guide</a></li>
+      <li><a href="https://beaconcha.in/" target="_blank" rel="noopener nofollow">Beaconcha.in — Ethereum Validator &amp; Beacon Chain Explorer</a></li>
+    </ul>
+
+    <h3>Security &amp; Smart Contract Hygiene</h3>
+    <ul>
+      <li><a href="https://revoke.cash/" target="_blank" rel="noopener nofollow">Revoke.cash — Token Approval Manager</a></li>
+      <li><a href="https://ethereum.org/en/guides/how-to-revoke-token-access/" target="_blank" rel="noopener nofollow">Ethereum.org — How to Revoke Token Access</a></li>
+      <li><a href="https://blog.openzeppelin.com/security-audits" target="_blank" rel="noopener nofollow">OpenZeppelin — Smart Contract Security Audits</a></li>
+    </ul>
+
+    <h3>Staking Data &amp; Analytics</h3>
+    <ul>
+      <li><a href="https://defillama.com/protocol/rocket-pool" target="_blank" rel="noopener nofollow">DeFiLlama — Rocket Pool TVL &amp; Protocol Data</a></li>
+      <li><a href="https://rated.network/" target="_blank" rel="noopener nofollow">Rated.network — Ethereum Validator Performance Ratings</a></li>
+    </ul>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>About:</strong> Prepared by Crypto Finance Experts as a practical, SEO-oriented knowledge base
+      for <em>Rocket Pool Staking</em>: rETH mechanics, APY/APR, node operator requirements, smoothing pool,
+      safety, comparisons, and troubleshooting.
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="card faq-section" aria-labelledby="faq">
+    <h2 id="faq">Rocket Pool Staking: Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f1" id="b1">
+        <h3>What is Rocket Pool staking and how does rETH work?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f1" class="faq-content" role="region" aria-labelledby="b1">
+        <p>Rocket Pool is a decentralised Ethereum liquid staking protocol. When you deposit ETH, you receive rETH — a token that increases in value relative to ETH as staking rewards accumulate. You don't need to do anything to earn yield; simply holding rETH is sufficient.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f2" id="b2">
+        <h3>What is the current Rocket Pool rETH APR / APY?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f2" class="faq-content" role="region" aria-labelledby="b2">
+        <p>The rETH rate fluctuates with network-wide Ethereum staking conditions and MEV activity. For real-time data, check the official Rocket Pool app or RocketScan. As a general reference, rETH APR has historically tracked slightly above or at the broader Ethereum consensus-layer staking rate.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f3" id="b3">
+        <h3>Is there a minimum amount to stake on Rocket Pool?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f3" class="faq-content" role="region" aria-labelledby="b3">
+        <p>There is no enforced minimum for liquid stakers obtaining rETH — you can deposit any amount of ETH. The practical minimum is determined by gas costs making small deposits economically unviable. Node operators, however, need a minimum of 8 ETH (LEB8 minipool) or 16 ETH plus RPL collateral.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f4" id="b4">
+        <h3>How do I get my ETH back from Rocket Pool?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f4" class="faq-content" role="region" aria-labelledby="b4">
+        <p>rETH holders can exit by burning rETH through the deposit pool (if ETH is available) or by swapping rETH → ETH on a DEX like Curve or Uniswap. There is no unbonding period for rETH holders — liquidity depends on deposit pool availability or DEX depth. Node operators must exit their validators through the Ethereum consensus layer, which takes longer.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f5" id="b5">
+        <h3>Is Rocket Pool safe and is it legit?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f5" class="faq-content" role="region" aria-labelledby="b5">
+        <p>Rocket Pool is a legitimate, audited, open-source protocol that has operated since 2021. Its smart contracts have been audited by multiple reputable security firms. However, no DeFi protocol is risk-free — smart-contract bugs, oracle failures, and rETH de-peg events are theoretical risks. Always assess your own risk tolerance and never stake more than you can afford to have impacted.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f6" id="b6">
+        <h3>What is RPL and do I need it to stake on Rocket Pool?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f6" class="faq-content" role="region" aria-labelledby="b6">
+        <p>RPL (Rocket Pool's governance and collateral token) is only required if you want to become a node operator. Liquid stakers who just want rETH do not need any RPL — they only need ETH for their deposit plus gas.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f7" id="b7">
+        <h3>What is the Rocket Pool smoothing pool and should I use it?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f7" class="faq-content" role="region" aria-labelledby="b7">
+        <p>The smoothing pool is an optional feature for node operators that pools execution-layer rewards (priority fees and MEV) across all opted-in operators, distributing a smooth share each ~28-day period. It is especially beneficial for operators with fewer validators, as it reduces income variance from MEV lottery effects. Most node operators opt in.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f8" id="b8">
+        <h3>How does Rocket Pool compare to Lido for liquid staking?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f8" class="faq-content" role="region" aria-labelledby="b8">
+        <p>Rocket Pool is more decentralised (permissionless node operators with collateral) while Lido uses a curated, permissioned operator set. Lido's stETH has deeper DeFi liquidity and integration. Rocket Pool's rETH is preferred by those who prioritise Ethereum network health and decentralisation. Both carry smart-contract risk; neither is universally "better" — the right choice depends on your priorities.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f9" id="b9">
+        <h3>Can I use rETH in DeFi while still earning staking yield?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f9" class="faq-content" role="region" aria-labelledby="b9">
+        <p>Yes. rETH is composable and can be used across DeFi protocols — liquidity provision on Curve/Balancer, lending on Aave, and more. Using rETH in DeFi adds additional layers of smart-contract risk (from each protocol you interact with), but the underlying staking yield continues to accrue as the rETH/ETH ratio rises.</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="container" role="contentinfo" style="padding:2.5rem 0; border-top:1px solid var(--line); margin-top:2rem">
+  <p class="muted">© 2026 Rocket Pool Staking Guide. Educational content with a security-first operational focus. Not financial advice.</p>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.faq-button').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        document.getElementById(b.getAttribute('aria-controls')).classList.remove('open');
+        document.getElementById(b.getAttribute('aria-controls')).style.maxHeight = '0';
+      });
+      if (!expanded) {
+        btn.setAttribute('aria-expanded', 'true');
+        const content = document.getElementById(btn.getAttribute('aria-controls'));
+        content.classList.add('open');
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
